@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3 uid="uid://dt5ook1dpr7jk"]
+
+[ext_resource type="Script" path="res://scripts/lightmapper.gd" id="2_shqrv"]
+[ext_resource type="Shader" path="res://shaders/2dgi.gdshader" id="3_y7frt"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_arwki"]
+shader = ExtResource("3_y7frt")
+shader_parameter/SIZE = Vector2(116, 66)
+shader_parameter/nLights = 2
+shader_parameter/nSegments = 3
+shader_parameter/segmentSamples = 4
+shader_parameter/lightSamples = 4
+shader_parameter/lightPos = PackedVector2Array(-60.3, 32.645, -42.025, 11.765)
+shader_parameter/lightCol = PackedVector3Array(100, 100, 100, 5, 5, 10)
+shader_parameter/lightRad = PackedFloat32Array(0.5, 0.1)
+shader_parameter/segment0 = PackedVector2Array(-40.29, 19.16, -100, -5.825, 0, 0)
+shader_parameter/segment1 = PackedVector2Array(-70.235, 6.56, 0, 5.725, 0, 65.615)
+shader_parameter/segmenCol = PackedVector3Array(1, 0, 0, 1, 1, 1, 1, 0.5, 1)
+
+[sub_resource type="QuadMesh" id="QuadMesh_ykf37"]
+
+[node name="Test scene" type="Node2D"]
+
+[node name="Main Cam" type="Camera2D" parent="."]
+zoom = Vector2(10, 10)
+
+[node name="Lightmap" type="MeshInstance2D" parent="."]
+material = SubResource("ShaderMaterial_arwki")
+position = Vector2(-7.62939e-06, 5.96046e-08)
+scale = Vector2(116, 66)
+mesh = SubResource("QuadMesh_ykf37")
+script = ExtResource("2_shqrv")
