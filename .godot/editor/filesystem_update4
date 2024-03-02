@@ -1,0 +1,8 @@
+res://scenes/test_scene.tscn
+res://scripts/example-map.gd
+res://scripts/map-loader.gd
+res://shaders/2dgi.gdshader
+res://materials/lightmap.tres
+res://scripts/player.gd
+res://scenes/editor.tscn
+res://scripts/map-saver.gd

@@ -1,0 +1,22 @@
+ea4bc82a6ad023ab7ee23ee620429895
+::res://::1709316750
+icon.svg::CompressedTexture2D::3269757966737323601::1709298081::1709298150::1::::<><>::
+::res://maps/::1709310338
+::res://materials/::1709316414
+lightmap.tres::ShaderMaterial::8621477723742155341::1709316414::0::1::::<><>::res://shaders/2dgi.gdshader
+::res://runtime/::1709298081
+lightmap.tres::ImageTexture::3214220871884950239::1709298081::0::1::::<><>::
+::res://scenes/::1709317184
+editor.tscn::PackedScene::1198732094271626167::1709317364::0::1::::<><>::uid://du3kqje26vjfh::::res://materials/lightmap.tres<>res://scripts/lightmapper.gd<>res://scripts/player.gd<>uid://px2uyffedsnp::::res://texture/player.png
+test_scene.tscn::PackedScene::8555657017392583828::1709317224::0::1::::<><>::res://scripts/map-loader.gd<>uid://du3kqje26vjfh::::res://materials/lightmap.tres<>res://scripts/lightmapper.gd<>res://scripts/player.gd<>uid://px2uyffedsnp::::res://texture/player.png
+::res://scripts/::1709316953
+example-map.gd::GDScript::-1::1709310289::0::1::::<>Node<>::
+fps-coutner.gd::GDScript::-1::1709298441::0::1::::<>Label<>::
+lightmapper.gd::GDScript::-1::1709298081::0::1::::<>Node<>::
+map-loader.gd::GDScript::-1::1709316932::0::1::::<>Node<>::
+player.gd::GDScript::-1::1709316953::0::1::::<>RigidBody2D<>::
+::res://shaders/::1709317184
+2dgi.gdshader::Shader::-1::1709317364::0::1::::<><>::
+::res://texture/::1709316750
+Diversion wall.png::CompressedTexture2D::4671228220278960901::1709298081::1709298150::1::::<><>::
+player.png::CompressedTexture2D::1101989686113740233::1709316748::1709316750::1::::<><>::

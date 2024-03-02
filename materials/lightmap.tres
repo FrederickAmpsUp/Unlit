@@ -1,0 +1,14 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://du3kqje26vjfh"]
+
+[ext_resource type="Shader" path="res://shaders/2dgi.gdshader" id="1_grofa"]
+
+[resource]
+shader = ExtResource("1_grofa")
+shader_parameter/nLights = 1
+shader_parameter/nSegments = 5
+shader_parameter/lightPos = PackedVector2Array(21.055, -2.865, -50, 6)
+shader_parameter/lightCol = PackedVector3Array(10, 10, 10, 1.5, 1.5, 1)
+shader_parameter/lightRad = PackedFloat32Array(0.36, 2)
+shader_parameter/segment0 = [Vector2(-59, -34), Vector2(57, 32), Vector2(-59, 32), Vector2(57, 32), Vector2(31, -1)]
+shader_parameter/segment1 = [Vector2(57, -34), Vector2(-59, 32), Vector2(-59, -34), Vector2(57, -34), Vector2(31, -34)]
+shader_parameter/segmentCol = [Vector3(1, 0, 0), Vector3(1, 0, 0), Vector3(1, 0, 0), Vector3(1, 0, 0), Vector3(1, 0, 0)]

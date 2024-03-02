@@ -1,32 +1,46 @@
-[gd_scene load_steps=5 format=3 uid="uid://dt5ook1dpr7jk"]
+[gd_scene load_steps=8 format=3 uid="uid://dt5ook1dpr7jk"]
 
+[ext_resource type="Script" path="res://scripts/map-loader.gd" id="1_65rkn"]
+[ext_resource type="Material" uid="uid://du3kqje26vjfh" path="res://materials/lightmap.tres" id="2_lh3yj"]
 [ext_resource type="Script" path="res://scripts/lightmapper.gd" id="2_shqrv"]
-[ext_resource type="Shader" path="res://shaders/2dgi.gdshader" id="3_y7frt"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_arwki"]
-shader = ExtResource("3_y7frt")
-shader_parameter/SIZE = Vector2(116, 66)
-shader_parameter/nLights = 2
-shader_parameter/nSegments = 3
-shader_parameter/segmentSamples = 4
-shader_parameter/lightSamples = 4
-shader_parameter/lightPos = PackedVector2Array(-60.3, 32.645, -42.025, 11.765)
-shader_parameter/lightCol = PackedVector3Array(100, 100, 100, 5, 5, 10)
-shader_parameter/lightRad = PackedFloat32Array(0.5, 0.1)
-shader_parameter/segment0 = PackedVector2Array(-40.29, 19.16, -100, -5.825, 0, 0)
-shader_parameter/segment1 = PackedVector2Array(-70.235, 6.56, 0, 5.725, 0, 65.615)
-shader_parameter/segmenCol = PackedVector3Array(1, 0, 0, 1, 1, 1, 1, 0.5, 1)
+[ext_resource type="Script" path="res://scripts/player.gd" id="4_fsn4u"]
+[ext_resource type="Texture2D" uid="uid://px2uyffedsnp" path="res://texture/player.png" id="5_000np"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_ykf37"]
 
-[node name="Test scene" type="Node2D"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_flhdw"]
+radius = 3.0
+
+[node name="Test scene" type="Node2D" node_paths=PackedStringArray("mapCollider")]
+script = ExtResource("1_65rkn")
+filePath = "res://maps/test.unlit"
+mapCollider = NodePath("Map Body")
+lightmapMat = ExtResource("2_lh3yj")
 
 [node name="Main Cam" type="Camera2D" parent="."]
-zoom = Vector2(10, 10)
+zoom = Vector2(9, 9)
 
 [node name="Lightmap" type="MeshInstance2D" parent="."]
-material = SubResource("ShaderMaterial_arwki")
-position = Vector2(-7.62939e-06, 5.96046e-08)
-scale = Vector2(116, 66)
+material = ExtResource("2_lh3yj")
+position = Vector2(-2.71051e-20, 4.23516e-22)
+scale = Vector2(127.4, 72.4)
 mesh = SubResource("QuadMesh_ykf37")
 script = ExtResource("2_shqrv")
+
+[node name="Map Body" type="StaticBody2D" parent="."]
+position = Vector2(1, 1)
+
+[node name="Player" type="RigidBody2D" parent="."]
+position = Vector2(-50, 6)
+gravity_scale = 0.1
+script = ExtResource("4_fsn4u")
+lightmapMat = ExtResource("2_lh3yj")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+shape = SubResource("CircleShape2D_flhdw")
+
+[node name="Sprite2D" type="Sprite2D" parent="Player"]
+texture_filter = 1
+position = Vector2(3.41061e-13, -3.41061e-13)
+scale = Vector2(0.125, 0.125)
+texture = ExtResource("5_000np")
