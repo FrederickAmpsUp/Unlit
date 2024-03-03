@@ -127,10 +127,10 @@ vec2 segmentSegmentIntersect(vec2 a0, vec2 b0, vec2 a1, vec2 b1)
 		return vec2(-1);
 	}
 
-    float t1 = ((v1.x*v2.y) - (v1.y*v2.x)) / dp;
+    float t1 = ((v1.x*v2.y) - (v1.y*v2.x)) / dp / distance(a0,b0);
     float t2 = dot(v1, v3) / dp;
 
-    if ((t1 >= 0.0 && t1 <= 1.0) && (t2 >= 0.0 && t2 <= 1.0)) {
+    if (t2 >= 0.0 && t2 <= 1.0) {
 		return vec2(t1,t2);
 	}
 
@@ -194,32 +194,59 @@ vec3 shadow(vec2 p, vec2 c, float r) {
 	float shadow = 1.0;
 	
 	for (int i = 0; i < nSegments; i++) {
-		vec2 oA = segment0[i];
-		vec2 oB = segment1[i];
-		
-		vec2 a = oA;
-		vec2 b = oB;
+		vec2 a = segment0[i];
+		vec2 b = segment1[i];
 		
 		vec2 pA = p-a;
 		vec2 pB = p-b;
-	
-		float t0 = segmentSegmentIntersect(oA, oB, p, a0).x;
-		float t1 = segmentSegmentIntersect(oA, oB, p, b0).x;
 		
-		if ((t0 > 0.0 && t0 < 1.0) && (t1 < 0.0 || t1 > 1.0))
-			a = mix(oA, oB, t0);
-		if ((t1 > 0.0 && t1 < 1.0) && (t0 < 0.0 || t0 > 1.0))
-			b = mix(oB, oA, t1);
-		if ((t0 > 0.0 && t0 < 1.0) && (t1 > 0.0 && t1 < 1.0)) {
-			a = mix(oA, oB, t0);
-			b = mix(oB, oA, t1);
+		vec2 cA = c-a;
+		vec2 cB = c-b;
+		
+		float t0 = segmentSegmentIntersect(a, b, p, a0).x;
+		float t1 = segmentSegmentIntersect(a, b, p, b0).x;
+		
+		float area = min(1.0, segmentArea(a,b, c));
+		
+		if ((t0 > 0.0 && t0 < 1.0) && (t1 < 0.0 || t1 > 1.0)) {
+			vec2 perpPA0 = vec2(toA0.y, -toA0.x);
+			
+			float dp0 = dot(perpPA0, pA);
+			float dp1 = dot(perpPA0, toB0);
+			float side = dp0*dp1; // negative: A is on opposite side of B0
+								  // positive: A is on same side of B0 (both of PA0)
+			if (side < 0.0) {
+				a = mix(a,b, t0);
+				area = segmentArea(a, b, p);
+			} else {
+				a = mix(a,b, t0);
+				area = segmentArea(a, b, p);
+			}
 		}
-		float left  = acos(0.9999*dot(normalize(p-a), normalize(p-a0)))/PI;
-		float right = acos(0.9999*dot(normalize(p-b), normalize(p-b0)))/PI;
-		shadow = min(1.0, (left+right)/2.0);
+		
+		if ((t1 > 0.0 && t1 < 1.0) && (t0 < 0.0 || t0 > 1.0)) {
+			vec2 perpPB0 = vec2(toB0.y, -toB0.x);
+			
+			float dp0 = dot(perpPB0, pB);
+			float dp1 = dot(perpPB0, toA0);
+			float side = dp0*dp1; // negative: B is on opposite side of A0
+								  // positive: B is on same side of A0 (both of PB0)
+			if (side < 0.0) {
+				a = mix(a,b, t1);
+				area = segmentArea(a, b, p);
+			}
+		}
+		
+		if ((t0 > 0.0 && t0 < 1.0) && (t1 > 0.0 && t1 < 1.0)) { // both hit
+			area = 1.0;
+		}
+		if ((t0 < 0.0 || t0 > 1.0) && (t1 < 0.0 || t1 > 1.0)) { // neither hit
+			area = 0.0;
+		}
+		shadow = min(1.0, area);
 	}
 	
-	return vec3(shadow);
+	return vec3(1.0-shadow);
 }
 
 vec3 directImpl(vec2 c, int samples) {
@@ -235,7 +262,7 @@ vec3 directImpl(vec2 c, int samples) {
 			continue;
 		}
 		vec3 shadowTerm = shadow(c, lC, lR);
-		directLight += shadowTerm;// * lightCol[i] / max(0.01, pow(sqDst-lR*lR, 0.7));
+		directLight += shadowTerm * lightCol[i] / max(0.01, pow(sqDst-lR*lR, 0.7));
 	}
 	return directLight;
 }
@@ -302,7 +329,7 @@ void fragment() {
 	
 	vec3 color = directLight;
 	//color += indirect(c);
-	/*
+/*
 		// tone mapping
 	color += 0.01;
 	if (length(color) > 1.0) {

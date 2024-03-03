@@ -31,7 +31,7 @@ script = ExtResource("2_shqrv")
 position = Vector2(1, 1)
 
 [node name="Player" type="RigidBody2D" parent="."]
-position = Vector2(-50, 6)
+position = Vector2(11, -11)
 gravity_scale = 0.1
 script = ExtResource("4_fsn4u")
 lightmapMat = ExtResource("2_lh3yj")
